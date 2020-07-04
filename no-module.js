@@ -15,10 +15,19 @@ cssObserve.customStyles = /* css */ `
     }
 `;
 document.head.appendChild(cssObserve);
-function loadScript(scriptElement) {
+async function loadScript(scriptElement) {
     const key = (new Date()).valueOf().toString();
     window[key] = scriptElement;
-    const innerText = scriptElement.innerText;
+    let innerText;
+    if (scriptElement.src) {
+        console.log(scriptElement.src);
+        const resp = await fetch(scriptElement.src);
+        const text = await resp.text();
+        innerText = text;
+    }
+    else {
+        innerText = scriptElement.innerText;
+    }
     const splitText = innerText.split('export const ');
     let iPos = 0;
     const winKey = `window['${key}']`;

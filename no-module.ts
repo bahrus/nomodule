@@ -31,6 +31,8 @@ function loadScript(scriptElement: HTMLScriptElement){
         splitText[i] = `const ${lhs}  = ${winKey}.${lhs} = ${token.substr(iPosOfEq + 1)};`
     }
     const modifiedText = splitText.join('');
-    eval(modifiedText);
-    delete (<any>window)[key];
+    const scriptTag = document.createElement('script');
+    scriptTag.type = 'module';
+    scriptTag.innerText = modifiedText;
+    document.head.appendChild(scriptTag);
 }

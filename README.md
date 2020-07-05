@@ -14,6 +14,8 @@ export const h = 'hello'; // nothing outside this module can access h, and the e
 </script>
 ```
 
+## Syntax
+
 nomodule.js provides a mechanism where the exported symbols can be accessed.  Script tags must have attribute nomodule, and type="module ish":
 
 ```html
@@ -35,6 +37,8 @@ export const h = 'hello';
 
 2.  This library, no-module.js, then, can inject some special instructions to produce the desired effects.  But in fact the JS processor which is used after the special instructions are inserted is in fact the ES6 processor.  So ES6 imports are allowed, for example (though support for import maps will require turning on the Chrome flag for import maps, or using a polyfill, like es-module-shim)
 
+3.  The pattern matching is precise / inflexible, and is limited to "export[space]const[space][symbol to export]".
+
 no-module.js also works for script references to ES6 modules, i.e.:
 
 ```html
@@ -43,7 +47,7 @@ no-module.js also works for script references to ES6 modules, i.e.:
 
 Another important feature ES6 modules lost that "legacy" script tags supported was access to the script tag from which the script derived - document.currentScript
 
-Access to the script tag which references or contains the module-ish code can access the script tag via window['2071aa02-e277-47f7-882a-a5a7c6218d4d']:
+Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: window['2071aa02-e277-47f7-882a-a5a7c6218d4d']:
 
 ```JavaScript
 const scriptTag = window['2071aa02-e277-47f7-882a-a5a7c6218d4d'];

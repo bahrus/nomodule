@@ -4,16 +4,16 @@ import { define } from '../xtal-element/xtal-latx';
 function addListener(node: Node){
     const cssObserve = document.createElement('css-observe') as any;
     cssObserve.observe = true;
-    cssObserve.selector = 'script[nomodule]';
+    cssObserve.selector = 'script[nomodule][type="module ish"]';
     cssObserve.addEventListener('latest-match-changed', e => {
         e.detail.value.dataset.found = 'true';
         loadScript(e.detail.value);
     });
     cssObserve.customStyles = /* css */`
-        script[nomodule][just-kidding-yes-module]{
+        script[nomodule][type="module ish"]{
             display:block;
         }
-        script[nomodule][just-kidding-yes-module][data-found]{
+        script[nomodule][type="module ish"][data-found]{
             display:none;
         }
     `;
@@ -34,6 +34,7 @@ async function loadScript(scriptElement: HTMLScriptElement){
     }else{
         innerText = scriptElement.innerText;
     }
+    innerText = innerText.replace(/2071aa02-e277-47f7-882a-a5a7c6218d4d/g, key);
     const splitText = innerText.split('export const ');
     let iPos = 0;
     const winKey = `window['${key}']`;

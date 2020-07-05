@@ -8,10 +8,10 @@ function addListener(node) {
         loadScript(e.detail.value);
     });
     cssObserve.customStyles = /* css */ `
-        script[nomodule]{
+        script[nomodule][just-kidding-yes-module]{
             display:block;
         }
-        script[nomodule][data-found]{
+        script[nomodule][just-kidding-yes-module][data-found]{
             display:none;
         }
     `;
@@ -50,3 +50,9 @@ window['${key}'].dataset.loaded = 'true';
     scriptTag.innerText = modifiedText;
     document.head.appendChild(scriptTag);
 }
+export class NoModule extends HTMLElement {
+    connectedCallback() {
+        addListener(this.getRootNode());
+    }
+}
+customElements.define('no-module', NoModule);

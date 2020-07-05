@@ -1,11 +1,30 @@
-import 'css-observe/css-observe.js';
+import('css-observe/css-observe.js');
+let NoModule = /** @class */ (() => {
+    class NoModule extends HTMLElement {
+        connectedCallback() {
+            addListener(this.getRootNode());
+        }
+    }
+    NoModule.cache = {};
+    return NoModule;
+})();
+export { NoModule };
+customElements.define('no-module', NoModule);
+Array.from(document.querySelectorAll('script[nomodule][type="module ish"]')).forEach((scriptTag) => {
+    const st = scriptTag;
+    st.dataset.found = 'true';
+    loadScript(st);
+});
 function addListener(node) {
     const cssObserve = document.createElement('css-observe');
     cssObserve.observe = true;
     cssObserve.selector = 'script[nomodule][type="module ish"]';
     cssObserve.addEventListener('latest-match-changed', e => {
-        e.detail.value.dataset.found = 'true';
-        loadScript(e.detail.value);
+        const st = e.detail.value;
+        if (st.dataset.found === 'true')
+            return;
+        st.dataset.found = 'true';
+        loadScript(st);
     });
     cssObserve.customStyles = /* css */ `
         script[nomodule][type="module ish"]{
@@ -24,9 +43,12 @@ async function loadScript(scriptElement) {
     scriptElement._modExport = {};
     let innerText;
     if (scriptElement.src) {
-        const resp = await fetch(scriptElement.src);
-        const text = await resp.text();
-        innerText = text;
+        if (NoModule.cache[scriptElement.src] === undefined) {
+            const resp = await fetch(scriptElement.src);
+            const text = await resp.text();
+            NoModule.cache[scriptElement.src] = text;
+        }
+        innerText = NoModule.cache[scriptElement.src];
     }
     else {
         innerText = scriptElement.innerText;
@@ -51,9 +73,3 @@ window['${key}'].dataset.loaded = 'true';
     scriptTag.innerText = modifiedText;
     document.head.appendChild(scriptTag);
 }
-export class NoModule extends HTMLElement {
-    connectedCallback() {
-        addListener(this.getRootNode());
-    }
-}
-customElements.define('no-module', NoModule);

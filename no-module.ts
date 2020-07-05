@@ -1,13 +1,30 @@
-import 'css-observe/css-observe.js';
-import { define } from '../xtal-element/xtal-latx';
+import('css-observe/css-observe.js');
+
+
+export class NoModule extends HTMLElement{
+    static cache : {[key: string]: string} = {};
+    connectedCallback(){
+        addListener(this.getRootNode());
+    }
+}
+
+customElements.define('no-module', NoModule);
+
+Array.from(document.querySelectorAll('script[nomodule][type="module ish"]')).forEach((scriptTag) => {
+    const st = scriptTag as HTMLScriptElement;
+    st.dataset.found = 'true';
+    loadScript(st);
+})
 
 function addListener(node: Node){
     const cssObserve = document.createElement('css-observe') as any;
     cssObserve.observe = true;
     cssObserve.selector = 'script[nomodule][type="module ish"]';
     cssObserve.addEventListener('latest-match-changed', e => {
-        e.detail.value.dataset.found = 'true';
-        loadScript(e.detail.value);
+        const st = e.detail.value as HTMLScriptElement;
+        if(st.dataset.found === 'true') return;
+        st.dataset.found = 'true';
+        loadScript(st);
     });
     cssObserve.customStyles = /* css */`
         script[nomodule][type="module ish"]{
@@ -22,15 +39,20 @@ function addListener(node: Node){
 
 addListener(document.head);
 
+
+
 async function loadScript(scriptElement: HTMLScriptElement){
     const key = (new Date()).valueOf().toString() + Math.random();
     (<any>window)[key] = scriptElement;
     (<any>scriptElement)._modExport = {};
     let innerText: string | undefined;
     if(scriptElement.src){
-        const resp = await fetch(scriptElement.src);
-        const text = await resp.text();
-        innerText = text;
+        if(NoModule.cache[scriptElement.src] === undefined){
+            const resp = await fetch(scriptElement.src);
+            const text = await resp.text();
+            NoModule.cache[scriptElement.src] = text;
+        }
+        innerText = NoModule.cache[scriptElement.src];
     }else{
         innerText = scriptElement.innerText;
     }
@@ -55,12 +77,6 @@ window['${key}'].dataset.loaded = 'true';
     document.head.appendChild(scriptTag);
 }
 
-export class NoModule extends HTMLElement{
-    connectedCallback(){
-        addListener(this.getRootNode());
-    }
-}
 
-customElements.define('no-module', NoModule);
 
 

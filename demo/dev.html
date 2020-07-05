@@ -11,9 +11,8 @@
 <body>
     <script nomodule type="module ish" src='test.js' id=myScriptTag></script>
     <script>
-        myScriptTag.addEventListener('loaded', e =>{
+        myScriptTag.addEventListener('loaded', e => {
             console.log(myScriptTag._modExport);
-            // { h: 'hello' }
         })
     </script>
 </body>

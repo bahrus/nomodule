@@ -1,28 +1,33 @@
 import 'css-observe/css-observe.js';
 
-const cssObserve = document.createElement('css-observe') as any;
-cssObserve.observe = true;
-cssObserve.selector = 'script[nomodule]';
-cssObserve.addEventListener('latest-match-changed', e => {
-    e.detail.value.dataset.found = 'true';
-    loadScript(e.detail.value);
-});
-cssObserve.customStyles = /* css */`
-    script[nomodule]{
-        display:block;
-    }
-    script[nomodule][data-found]{
-        display:none;
-    }
-`;
-document.head.appendChild(cssObserve);
+
+function addListener(node: Node){
+    const cssObserve = document.createElement('css-observe') as any;
+    cssObserve.observe = true;
+    cssObserve.selector = 'script[nomodule]';
+    cssObserve.addEventListener('latest-match-changed', e => {
+        e.detail.value.dataset.found = 'true';
+        loadScript(e.detail.value);
+    });
+    cssObserve.customStyles = /* css */`
+        script[nomodule]{
+            display:block;
+        }
+        script[nomodule][data-found]{
+            display:none;
+        }
+    `;
+    node.appendChild(cssObserve);
+}
+
+addListener(document.head);
 
 async function loadScript(scriptElement: HTMLScriptElement){
-    const key = (new Date()).valueOf().toString();
+    const key = (new Date()).valueOf().toString() + Math.random();
     (<any>window)[key] = scriptElement;
+    (<any>scriptElement)._modExport = {};
     let innerText: string | undefined;
     if(scriptElement.src){
-        console.log(scriptElement.src);
         const resp = await fetch(scriptElement.src);
         const text = await resp.text();
         innerText = text;
@@ -36,9 +41,13 @@ async function loadScript(scriptElement: HTMLScriptElement){
         const token = splitText[i];
         const iPosOfEq = token.indexOf('=');
         const lhs = token.substr(0, iPosOfEq).trim();
-        splitText[i] = `const ${lhs}  = ${winKey}.${lhs} = ${token.substr(iPosOfEq + 1)};`
+        splitText[i] = `const ${lhs}  = ${winKey}._modExport.${lhs} = ${token.substr(iPosOfEq + 1)};`
     }
-    const modifiedText = splitText.join('');
+    let modifiedText = splitText.join('');
+    modifiedText += `
+window['${key}'].dispatchEvent(new Event('loaded'));
+window['${key}'].dataset.loaded = 'true';
+`;
     const scriptTag = document.createElement('script');
     scriptTag.type = 'module';
     scriptTag.innerText = modifiedText;

@@ -46,7 +46,7 @@ export const h = 'hello';
 </script>
 ```
 
-**NBs:**:
+**NBs:**
 
 1.  The "nomodule" attribute tells modern browsers to ignore the tag, so there is no wasted CPU processing something that isn't fully complete.
 

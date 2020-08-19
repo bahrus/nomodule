@@ -66,6 +66,6 @@ window['${key}'].dataset.loaded = 'true';
 `;
     const scriptTag = document.createElement('script');
     scriptTag.type = 'module';
-    scriptTag.innerText = modifiedText;
+    scriptTag.innerHTML = modifiedText;
     document.head.appendChild(scriptTag);
 }

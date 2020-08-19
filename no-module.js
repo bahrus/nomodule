@@ -1,14 +1,10 @@
 import('css-observe/css-observe.js');
-let NoModule = /** @class */ (() => {
-    class NoModule extends HTMLElement {
-        connectedCallback() {
-            addListener(this.getRootNode());
-        }
+export class NoModule extends HTMLElement {
+    connectedCallback() {
+        addListener(this.getRootNode());
     }
-    NoModule.cache = {};
-    return NoModule;
-})();
-export { NoModule };
+}
+NoModule.cache = {};
 customElements.define('no-module', NoModule);
 Array.from(document.querySelectorAll('script[nomodule][type="module ish"]')).forEach((scriptTag) => {
     const st = scriptTag;
@@ -19,7 +15,7 @@ function addListener(node) {
     const cssObserve = document.createElement('css-observe');
     cssObserve.observe = true;
     cssObserve.selector = 'script[nomodule][type="module ish"]';
-    cssObserve.addEventListener('latest-match-changed', e => {
+    cssObserve.addEventListener('latest-match-changed', (e) => {
         const st = e.detail.value;
         if (st.dataset.found === 'true')
             return;
@@ -53,7 +49,7 @@ async function loadScript(scriptElement) {
     else {
         innerText = scriptElement.innerText;
     }
-    innerText = innerText.replace(/2071aa02-e277-47f7-882a-a5a7c6218d4d/g, key);
+    innerText = innerText.replaceAll('module ish', key);
     const splitText = innerText.split('export const ');
     let iPos = 0;
     const winKey = `window['${key}']`;

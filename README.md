@@ -6,7 +6,7 @@
 
 ## Purpose
 
-ES6 modules are a great leap forward over the legacy JavaScript browser support.  But there are two gaps where legacy JavaScript provided some advantages.
+ES6 modules are a great leap forward over the legacy JavaScript browsers support.  But there are two gaps where legacy JavaScript provided some advantages.
 
 ### Referencing outside the script tag.
 
@@ -62,22 +62,25 @@ no-module.js also works for script references to ES6 modules, i.e.:
 
 ## document.currentScript replacement
 
-Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: window['2071aa02-e277-47f7-882a-a5a7c6218d4d']:
+Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: window['module ish']:
 
 ```JavaScript
-const scriptTag = window['2071aa02-e277-47f7-882a-a5a7c6218d4d'];
+const scriptTag = window['module ish'];
 console.log(scriptTag);
 //<script nomodule="" type="module ish" src="test.js" id="myScriptTag" data-found="true" data-loaded="true"></script>
 ```
 
 Simply including a reference to no-module.js will allow any "nomodule/module ish" script tags outside any shadow DOM to load as described above.
 
-To obtain the same behavior within a shadow DOM realm, include a no-module tag:
+To achieve the same behavior within a shadow DOM realm, include a single no-module tag somewhere:
 
 ```html
 <my-custom-element>
     #shadow
+        ...
         <script nomodule type="module ish" src=myModule.js></script>
+        ...
+        <script nomodule type="module ish" src=yourModule.js></script>
         <no-module></no-module>
 </my-custom-element>
 ```

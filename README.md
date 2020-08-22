@@ -57,7 +57,7 @@ export const h = 'hello';
 no-module.js also works for script references to ES6 modules, i.e.:
 
 ```html
-<script nomodule type="module ish" src=myModule.js></script>
+<script nomodule=ish src=myModule.js></script>
 ```
 
 ## document.currentScript replacement

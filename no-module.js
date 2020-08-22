@@ -6,7 +6,7 @@ export class NoModule extends HTMLElement {
 }
 NoModule.cache = {};
 customElements.define('no-module', NoModule);
-Array.from(document.querySelectorAll('script[nomodule][type="module ish"]')).forEach((scriptTag) => {
+Array.from(document.querySelectorAll('script[nomodule="ish"]')).forEach((scriptTag) => {
     const st = scriptTag;
     st.dataset.found = 'true';
     loadScript(st);
@@ -14,7 +14,7 @@ Array.from(document.querySelectorAll('script[nomodule][type="module ish"]')).for
 function addListener(node) {
     const cssObserve = document.createElement('css-observe');
     cssObserve.observe = true;
-    cssObserve.selector = 'script[nomodule][type="module ish"]';
+    cssObserve.selector = 'script[nomodule="ish"]';
     cssObserve.addEventListener('latest-match-changed', (e) => {
         const st = e.detail.value;
         if (st.dataset.found === 'true')
@@ -23,10 +23,10 @@ function addListener(node) {
         loadScript(st);
     });
     cssObserve.customStyles = /* css */ `
-        script[nomodule][type="module ish"]{
+        script[nomodule="ish"]{
             display:block;
         }
-        script[nomodule][type="module ish"][data-found]{
+        script[nomodule="ish"][data-found]{
             display:none;
         }
     `;

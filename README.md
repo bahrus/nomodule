@@ -34,7 +34,7 @@ no-module provides some support to overcome these limitations.
 nomodule.js provides a mechanism where the exported symbols can be accessed.  Script tags must have attribute nomodule, and type="module ish":
 
 ```html
-<script nomodule type="module ish" id=myScriptTag>
+<script nomodule=ish id=myScriptTag>
 export const h = 'hello';
 </script>
 
@@ -50,7 +50,7 @@ export const h = 'hello';
 
 1.  The "nomodule" attribute tells modern browsers to ignore the tag, so there is no wasted CPU processing something that isn't fully complete.
 
-2.  This library, no-module.js, then, can inject some special instructions to produce the desired effects.  But in fact the JS processor which is used after the special instructions are inserted is in fact the ES6 processor.  So ES6 imports are allowed, for example (though support for import maps will require turning on the Chrome flag for import maps, or using a polyfill, like es-module-shim or es-dev-server)
+2.  This library, no-module.js, then, can inject some special instructions to produce the desired effects.  But the JS processor which is used after the special instructions are inserted is in fact the ES6 processor.  So ES6 imports are allowed, for example (though support for import maps will require turning on the Chrome flag for import maps, or using a polyfill, like es-module-shim or es-dev-server)
 
 3.  The pattern matching is precise / inflexible, and is limited to "export[space]const[space][symbol to export]".
 
@@ -62,15 +62,17 @@ no-module.js also works for script references to ES6 modules, i.e.:
 
 ## document.currentScript replacement
 
-Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: window['module ish']:
+Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: "selfish":
 
 ```JavaScript
-const scriptTag = window['module ish'];
+const scriptTag = selfish;
 console.log(scriptTag);
 //<script nomodule="" type="module ish" src="test.js" id="myScriptTag" data-found="true" data-loaded="true"></script>
 ```
 
-Simply including a reference to no-module.js will allow any "nomodule/module ish" script tags outside any shadow DOM to load as described above.
+**NB:** Greedy code will break.
+
+Simply including a reference to no-module.js will allow any "nomodule=ish" script tags outside any shadow DOM to load as described above.
 
 To achieve the same behavior within a shadow DOM realm, include a single no-module tag somewhere:
 
@@ -78,9 +80,9 @@ To achieve the same behavior within a shadow DOM realm, include a single no-modu
 <my-custom-element>
     #shadow
         ...
-        <script nomodule type="module ish" src=myModule.js></script>
+        <script nomodule=ish src=myModule.js></script>
         ...
-        <script nomodule type="module ish" src=yourModule.js></script>
+        <script nomodule=ish src=yourModule.js></script>
         <no-module></no-module>
 </my-custom-element>
 ```

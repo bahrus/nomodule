@@ -49,7 +49,7 @@ async function loadScript(scriptElement) {
     else {
         innerText = scriptElement.innerText;
     }
-    innerText = innerText.replaceAll('module ish', key);
+    innerText = innerText.replaceAll('selfish', `window['${key}']`);
     const splitText = innerText.split('export const ');
     let iPos = 0;
     const winKey = `window['${key}']`;

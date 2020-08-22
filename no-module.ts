@@ -56,7 +56,7 @@ async function loadScript(scriptElement: HTMLScriptElement){
     }else{
         innerText = scriptElement.innerText;
     }
-    innerText = innerText.replaceAll('selfish', `window['${key}']`);
+    innerText = innerText.replace(/selfish/g, `window['${key}']`);
     const splitText = innerText.split('export const ');
     let iPos = 0;
     const winKey = `window['${key}']`;

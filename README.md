@@ -36,12 +36,17 @@ nomodule.js provides a mechanism where the exported symbols can be accessed.  Sc
 ```html
 <script nomodule=ish id=myScriptTag>
 export const h = 'hello';
+throw 'new Error'; 
 </script>
 
 <script>
     myScriptTag.addEventListener('loaded', e =>{
         console.log(myScriptTag._modExport);
         // { h: "hello" }
+    });
+    myScriptTag.addEventListener('err', e => {
+        console.log(e.detail.message);
+        // "new Error"
     })
 </script>
 ```

@@ -1,6 +1,6 @@
 {
   "name": "nomodule",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Enhance script tag functionality for modules.",
   "main": "no-module.js",
   "module": "no-module.js",

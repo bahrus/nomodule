@@ -13,7 +13,10 @@
     <script>
         myScriptTag.addEventListener('loaded', e => {
             console.log(myScriptTag._modExport);
-        })
+        });
+        myScriptTag.addEventListener('err', e => {
+            console.log(e);
+        });
     </script>
 </body>
 </html>

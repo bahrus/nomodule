@@ -60,7 +60,16 @@ async function loadScript(scriptElement) {
         splitText[i] = `const ${lhs}  = ${winKey}._modExport.${lhs} = ${token.substr(iPosOfEq + 1)};`;
     }
     let modifiedText = splitText.join('');
-    modifiedText += `
+    modifiedText = /* js */ `
+try{
+    ${modifiedText}
+}catch(err){
+    window['${key}'].dispatchEvent(new CustomEvent('err', {
+        detail: {
+            message: err
+        }
+    }))
+}
 window['${key}'].dispatchEvent(new Event('loaded'));
 window['${key}'].dataset.loaded = 'true';
 `;

@@ -18,5 +18,18 @@
             console.log(e);
         });
     </script>
+    <fake-el>
+        <script type=module>
+            if(false) import('css-observe/css-observe.js');
+        </script>
+    </fake-el>
+    <script>
+        const scriptTest = document.createElement('script');
+        scriptTest.setAttribute('type', 'module');
+        scriptTest.innerHTML = `
+        import('css-observe/css-observe.js');
+        `;
+        document.head.appendChild(scriptTest);
+    </script>
 </body>
 </html>

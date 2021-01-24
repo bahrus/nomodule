@@ -66,7 +66,7 @@ no-module.js also works for script references to ES6 modules, i.e.:
 
 ## document.currentScript replacement
 
-Access to the script tag which references or contains the module-ish code can access the script tag via the magic string: "selfish":
+To access the script tag which references or contains the script, use the magic string: "selfish":
 
 ```JavaScript
 const scriptTag = selfish;

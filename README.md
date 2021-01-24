@@ -22,7 +22,6 @@ export const h = 'hello'; // nothing outside this module can access h, and the e
 </script>
 ```
 
-
 ### Access to the script tag instance.
 
 Another important feature ES6 modules lost that "legacy" script tags supported was access to the script tag from which the script derived - document.currentScript.
@@ -31,7 +30,7 @@ no-module provides some support to overcome these limitations.
 
 ## Syntax
 
-nomodule.js provides a mechanism where the exported symbols can be accessed.  Script tags must have attribute nomodule, and type="module ish":
+nomodule.js provides a mechanism where the exported symbols can be accessed.  Script tags must have attribute nomodule=ish:
 
 ```html
 <script nomodule=ish id=myScriptTag>
@@ -55,7 +54,7 @@ throw 'new Error';
 
 1.  The "nomodule" attribute tells modern browsers to ignore the tag, so there is no wasted CPU processing something that isn't fully complete.
 
-2.  This library, no-module.js, then, can inject some special instructions to produce the desired effects.  But the JS processor which is used after the special instructions are inserted is in fact the ES6 processor.  So ES6 imports are allowed, for example (though support for import maps will require turning on the Chrome flag for import maps, or using a polyfill, like es-module-shim or es-dev-server)
+2.  This library, no-module.js, then, can inject some special instructions to produce the desired effects.  But the JS processor which is used after the special instructions are inserted is in fact the ES6 (module) processor.  So ES6 imports are allowed, for example (though support for import maps will require turning on the Chrome flag for import maps, or using a polyfill, like es-module-shim or es-dev-server).
 
 3.  The pattern matching is precise / inflexible, and is limited to "export[space]const[space][symbol to export]".
 
@@ -72,7 +71,7 @@ Access to the script tag which references or contains the module-ish code can ac
 ```JavaScript
 const scriptTag = selfish;
 console.log(scriptTag);
-//<script nomodule="" type="module ish" src="test.js" id="myScriptTag" data-found="true" data-loaded="true"></script>
+//<script nomodule="ish" src="test.js" id="myScriptTag" data-found="true" data-loaded="true"></script>
 ```
 
 **NB:** Greedy code will break.

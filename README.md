@@ -90,3 +90,15 @@ To achieve the same behavior within a shadow DOM realm, include a single no-modu
         <no-module></no-module>
 </my-custom-element>
 ```
+
+** Working like it's '95 [TODO]
+
+```html
+<div on-click="myScript.yawnAndStretch()">Tumble out of bed</div>
+...
+<script nomodule=ish id=myScript>
+export function yawnAndStretch(){
+    event.target.textContent = 'Try to come to life';
+}
+</script>
+```

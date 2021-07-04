@@ -12,6 +12,8 @@ Array.from(document.querySelectorAll('script[nomodule="ish"]')).forEach((scriptT
     loadScript(st);
 });
 function addListener(node) {
+    if (node === document)
+        return;
     const cssObserve = document.createElement('css-observe');
     cssObserve.observe = true;
     cssObserve.selector = 'script[nomodule="ish"]';

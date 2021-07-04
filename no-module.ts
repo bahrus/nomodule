@@ -1,6 +1,5 @@
 import('css-observe/css-observe.js');
 
-
 export class NoModule extends HTMLElement{
     static cache : {[key: string]: string} = {};
     connectedCallback(){
@@ -17,6 +16,7 @@ Array.from(document.querySelectorAll('script[nomodule="ish"]')).forEach((scriptT
 })
 
 function addListener(node: Node){
+    if(node === document) return;
     const cssObserve = document.createElement('css-observe') as any;
     cssObserve.observe = true;
     cssObserve.selector = 'script[nomodule="ish"]';

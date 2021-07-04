@@ -1,10 +1,10 @@
 import('css-observe/css-observe.js');
 export class NoModule extends HTMLElement {
+    static cache = {};
     connectedCallback() {
         addListener(this.getRootNode());
     }
 }
-NoModule.cache = {};
 customElements.define('no-module', NoModule);
 Array.from(document.querySelectorAll('script[nomodule="ish"]')).forEach((scriptTag) => {
     const st = scriptTag;

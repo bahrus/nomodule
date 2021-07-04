@@ -9,10 +9,10 @@
     "start": "web-dev-server --app-index demo/dev.html --node-resolve --watch --open"
   },
   "dependencies": {
-    "css-observe": "0.0.40"
+    "css-observe": "0.0.41"
   },
   "devDependencies": {
-    "@web/dev-server": "0.1.5"
+    "@web/dev-server": "0.1.18"
   },
   "repository": {
     "type": "git",
